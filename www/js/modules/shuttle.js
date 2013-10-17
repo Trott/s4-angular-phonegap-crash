@@ -25,7 +25,11 @@
             var xhr = new window.XMLHttpRequest();
             xhr.open('GET', 'http://apis.ucsf.edu/shuttle/routes');
             xhr.onload = function () {
-                success(JSON.parse(xhr.responseText));
+                try {
+                    success(JSON.parse(xhr.responseText));
+                } catch (e) {
+                    failure();
+                }
             };
             xhr.onerror=failure;
 
