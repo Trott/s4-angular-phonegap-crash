@@ -1,13 +1,8 @@
 (function () {
     'use strict';
-    angular.module('main', ['angularytics', 'news'])
+    angular.module('main', ['news'])
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
-    }])
-    .config(['AngularyticsProvider', function(AngularyticsProvider) {
-        AngularyticsProvider.setEventHandlers(['Google']);
-    }]).run(['Angularytics', function(Angularytics) {
-        Angularytics.init();
     }])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
