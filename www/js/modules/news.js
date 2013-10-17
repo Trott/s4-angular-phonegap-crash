@@ -12,7 +12,7 @@
                 var promise = rssReaderService.getRssData(
                     'http://feeds.feedburner.com/UCSF_News',
                     $scope,
-                    {localStorageKey: 'feed_ucsf_news'}
+                    {}
                 );
                 promise.then(
                     function(feed) {
