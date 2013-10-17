@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UCSF</title>
+    <title>Galaxy S4 + Android 4.2.2 + PhoneGap Crash</title>
     <link rel="stylesheet" type="text/css" href="css/main.css" media="screen">
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen">
@@ -37,7 +37,7 @@
 <section>
 <progress data-ng-hide="feed"><span class="spinner"></span></progress>
 <div data-ng-show="feed.entries && feed.entries.length>0" class="menu detailed">
-    <h2>UCSF News</h2>
+    <h2>News</h2>
     <ol data-ng-repeat="entry in feed.entries">
         <li>
             <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
@@ -47,7 +47,7 @@
     </ol>
 </div>
 <div class="content" data-ng-cloak data-ng-show="feed && ! feed.entries || feed.entries.length===0">
-    <h2>UCSF News</h2>
+    <h2>News</h2>
     <p>Content could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p>
 </div>
 </section>
