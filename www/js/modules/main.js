@@ -1,9 +1,21 @@
 (function () {
     'use strict';
-    angular.module('main', ['shuttle'])
+    angular.module('main', [])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-        .when('/', {templateUrl: 'main/mainMenu.html'})
+        .when('/', {templateUrl: 'main', controller: 'mainController'})
         .otherwise({redirectTo: '/'});
-    }]);
+    }])
+    .controller(
+        'mainController',
+        ['$scope', '$timeout', function ($scope, $timeout) {
+            $scope.loading = true;
+
+            var callback = function () {
+                $scope.loading = false;
+            };
+
+            $timeout(callback, 1000);
+        }]
+    );
 }());
