@@ -12,7 +12,6 @@
             $scope.loadError = false;
 
             UCSF.Shuttle.routes(
-                {},
                 function (data) {
                     $scope.loading = false;
                     $scope.routes = data.routes || [];
