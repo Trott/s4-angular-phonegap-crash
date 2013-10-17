@@ -1,1 +1,0 @@
-!function(){"use strict";angular.module("emergency",[]).config(["$routeProvider",function(a){a.when("/emergency",{templateUrl:"emergency/mainMenu.html"})}])}();
