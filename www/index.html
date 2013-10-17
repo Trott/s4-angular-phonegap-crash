@@ -11,25 +11,21 @@
 
 <!-- Begin Templates -->
 <script type="text/ng-template" id="main/mainMenu.html">
-    <a href="#/news">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
+    <a href="#/shuttle/list">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
 </script>
 
-<script type="text/ng-template" id="news/mainMenu.html">
+<script type="text/ng-template" id="shuttle/routeList.html">
 <section>
-<progress data-ng-hide="feed"><span class="spinner"></span></progress>
-<div data-ng-show="feed.entries && feed.entries.length>0" class="menu detailed">
-    <h2>News</h2>
-    <ol data-ng-repeat="entry in feed.entries">
-        <li>
-            <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
-                <div class="smallprint light">{{entry.dateTime.date}}</div>
-            </a>
+<div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
+<div data-ng-hide="loading" class="menu detailed">
+    <h2>Shuttles<span data-ng-show="location"> for {{location}}</span></h2>
+    <ol>
+        <li data-ng-repeat="route in routes | orderBy: 'routeShortName'">
+            <a href="#/shuttle/schedule/{{route.id.id}}"><div class="shuttle-color {{route.id.id}}"></div> {{route.routeShortName}}</a>
         </li>
     </ol>
-</div>
-<div class="content" data-ng-cloak data-ng-show="feed && ! feed.entries || feed.entries.length===0">
-    <h2>News</h2>
-    <p>Content could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p>
+    <p data-ng-show="!routes.length && !loadError">No shuttles found.</p>
+    <p data-ng-show="loadError">Could not load content. Please <a href="" data-ng-click="load()">try again</a>.</p>
 </div>
 </section>
 </script>
@@ -39,7 +35,7 @@
     <script src="js/campuskit.js"></script>
     <script src="js/modules/angular.js"></script>
     <script src="js/modules/main.js"></script>
-    <script src="js/modules/rssReader.js"></script>
-    <script src="js/modules/news.js"></script>
+    <script src="js/ucsf.js"></script>
+    <script src="js/modules/shuttle.js"></script>
 </body>
 </html>
