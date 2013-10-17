@@ -19,7 +19,6 @@
             var success = function (data) {
                 $scope.loading= false;
                 $scope.routes = data.routes || [];
-                $scope.$apply();
             };
 
             var xhr = new window.XMLHttpRequest();
@@ -30,6 +29,7 @@
                 } catch (e) {
                     failure();
                 }
+                $scope.$apply();
             };
             xhr.onerror=failure;
 
