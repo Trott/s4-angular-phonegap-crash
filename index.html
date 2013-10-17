@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" manifest="junk">
+<head>
+    <meta charset="utf-8">
+    <title>UCSF</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen">
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="css/mainPage.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/secondary.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/shuttle.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/directory.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/maps.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/research.css" media="screen">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+</head>
+<body>
+    <!-- prefetch background images -->
+    <img style="display:none" alt="" src="img/background-decor.png">
+    <img style="display:none" alt="" src="img/watermark.png">
+
+    <!-- id="ng-app" needed for IE8 support, according to http://docs.angularjs.org/guide/ie -->
+    <div id="ng-app" data-ng-app="main">
+
+<!-- Begin Templates -->
+<script type="text/ng-template" id="about/mainMenu.html">
+<div class="content">
+    <h2>About</h2>
+    <p>Version 2.2.3</p>
+    <p>This app is built with <a href="https://github.com/Trott/CampusKit" rel="external">CampusKit</a>. CampusKit is an open source project created by the UCSF Library &amp; Center for Knowledge Management.</p>
+</div>
+</script>
+
+<script type="text/ng-template" id="directory/searchForm.html">
+<div data-ng-controller="directorySearchController">
+
+    <form data-ng-submit="search()">
+        <h2>Person Search</h2>
+        <input autofocus placeholder="Name or department" data-ng-model="keywords">
+        <input type="submit" value="Search">
+    </form>
+
+    <progress data-ng-show="loading"><span class="spinner"></span></progress>
+
+
+    <div class="menu" data-ng-hide="loading || ! searchSubmitted">
+        <h2>Search Results ({{results.data && results.data.length || 0}})</h2>
+        <p class="info" data-ng-show="results.message">{{results.message}}</p>
+        <p class="info" data-ng-show="loadError">An error occurred. Please <a href="" data-ng-click="load()">try again</a>.</p>
+        <ol data-ng-show="!loadError">
+            <li data-ng-repeat="result in results.data">
+                <a href="" data-ng-init="show=false" data-ng-click="show=!show">
+                    <span>{{result.displayname}}<span data-ng-repeat="degree in result.ucsfedudegree">, {{degree}}</span></span>
+                    <span data-ng-show="result.ucsfeduprimarydepartmentname"> &ndash; {{result.ucsfeduprimarydepartmentname}}</span>
+                </a>
+                <div class="ucsf-directory-detail" data-ng-show="show">
+                <ul>
+                    <li data-ng-repeat="number in result.telephonenumber"><a href="tel:{{number}}">{{number}}</a></li>
+                    <li data-ng-repeat="email in result.mail"><a href="mailto:{{email}}">{{email}}</a></li>
+                    <!--[if !IE]> -->
+                    <li data-ng-repeat="profilenodeid in result.ucsfeduprofilenodeid"><a href="#/research/{{profilenodeid}}">Research Profile</a></li>
+                    <!-- <![endif]-->
+                    <li data-ng-repeat="profilenodeid in result.ucsfeduprofilenodeid" class="ucsf-directory-noclick"><img data-ng-src="http://src.sencha.io/100/http://profiles.ucsf.edu/profile/Modules/CustomViewPersonGeneralInfo/PhotoHandler.ashx?NodeID={{profilenodeid}}" alt="" class="profile-photo"></li>
+                    <li class="ucsf-directory-noclick" data-ng-repeat="title in result.ucsfeduworkingtitle">{{title}}</li>
+                    <li class="ucsf-directory-noclick" data-ng-repeat="address in result.postaladdress">{{address}}</li>
+                </ul>
+            </div>
+            </li>
+        </ol>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="emergency/mainMenu.html">
+<div class="menu detailed">
+	<h2>Emergency Phone Numbers</h2>
+    <ol>
+        <li><a href="tel:+911">911 <span class="smallprint">for emergencies only</span></a></li>
+        <li><a href="tel:+14154761414">UCSF Police Non-Emergency<br><span class="smallprint">(415) 476-1414</span></a></li>
+        <li><a href="tel:+14158857890">UCSF Medical Center Security<br><span class="smallprint">(415) 885-7890</span></a></li>
+        <li><a href="tel:+14155024000">Campus Emergency Information Hotline<br><span class="smallprint">(415) 502-4000</span></a></li>
+        <li><a href="tel:+18008738232">Back-up Campus Emergency Hotline<br><span class="smallprint">1 (800) 873-8232</span></a></li>
+        <li><a href="tel:+14158857828">UCSF Medical Center Information Hotline<br><span class="smallprint">(415) 885-7828</span></a></li>
+    </ol>
+</div>
+</script>
+
+<script type="text/ng-template" id="events/academicEvents.html">
+<section class="menu detailed">
+    <h2>Featured Academic Events</h2>
+    <progress data-ng-hide="feed"><span class="spinner"></span></progress>
+
+    <ol data-ng-repeat="entry in feed.entries">
+        <li>
+            <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
+                <div class="smallprint light">{{entry.dateTime.date}}</div>
+                <div class="smallprint light">{{entry.dateTime.time}}</div>
+            </a>
+        </li>
+    </ol>
+</section>
+
+</script>
+
+<script type="text/ng-template" id="events/mainMenu.html">
+<div class="menu detailed">
+	<h2>Events</h2>
+	<ol>
+		<li><a href="#/events/ucsfevents">UCSF Events</a></li>
+		<li><a href="#/events/academicevents">Featured Academic Events</a></li>
+	</ol>
+</div>
+</script>
+
+<script type="text/ng-template" id="events/ucsfEvents.html">
+<section class="menu detailed">
+    <h2>UCSF Events</h2>
+    <progress data-ng-hide="feed"><span class="spinner"></span></progress>
+
+    <ol data-ng-repeat="entry in feed.entries">
+        <li>
+            <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
+                <div class="smallprint light">{{entry.dateTime.date}}</div>
+                <div class="smallprint light">{{entry.dateTime.time}}</div>
+            </a>
+        </li>
+    </ol>
+</section>
+
+</script>
+
+<script type="text/ng-template" id="feedback/mainMenu.html">
+<div class="menu">
+    <h2>Feedback</h2>
+    <ol>
+        <li><a rel="external" href="http://campuslifeservices.ucsf.edu/transportation/feedback/">Shuttle Service</a>
+        <li><a rel="external" href="https://ucsf.co1.qualtrics.com/SE/?SID=SV_5hwQLaXoodjWQ29">This App (UCSF)</a>
+    </ol>
+</div>
+</script>
+
+<script type="text/ng-template" id="fitness/locations.html">
+<div class="content">
+<h1 class="content-first">Hours &amp; Locations</h1>
+<h1 class="light">Regular Hours</h1>
+<div>
+<p>The Millberry and Bakar Fitness and Recreation Centers have the same hours:</p>
+<div>
+<ul>
+<li>Mon - Fri: 5:30 am - 10:00 pm</li>
+<li>Sat - Sun: 7:30 am - 8:00 pm</li>
+</ul>
+</div>
+<p>For Holiday and Member Services Hours:<br/>
+<a rel="external" href="http://campuslifeservices.ucsf.edu/fitnessrecreation/article/248">Parnassus</a><br/>
+<a rel="external" href="http://campuslifeservices.ucsf.edu/fitnessrecreation/article/249">Mission Bay</a>
+</p>
+</div>
+<h1 class="light">Parnassus</h1>
+<p>
+Millberry Fitness and Recreation Center<br />
+500 Parnassus Avenue<br />
+San Francisco California 94143<br />
+Phone: <a href="tel:(415) 476-1115">(415) 476-1115</a><br />
+Fax: <a href="tel:(415) 502-5887">(415) 502-5887</a><br/>
+<a href="#/maps/map/Millberry%20Union">Map</a>
+</p>
+<h1 class="light">Mission Bay</h1>
+<p>
+Bakar Fitness and Recreation Center<br />
+1675 Owens Street<br />
+San Francisco California 94158<br />
+Phone: <a href="tel:(415) 514-4545">(415) 514-4545</a><br />
+Fax: <a href="tel:(415) 514-4820">(415) 514-4820</a><br/>
+<a href="#/maps/map/Rutter%20Center">Map</a>
+</p>
+</div>
+</script>
+
+<script type="text/ng-template" id="fitness/mainMenu.html">
+<section class="menu detailed">
+    <h2>Fitness</h2>
+    <ol>
+        <li><a href="#/fitness/schedule">Group Fitness and Pools</a></li>
+        <li><a href="#/fitness/locations">Hours and Locations</a></li>
+        <li class="menu-last"><a href="http://campuslifeservices.ucsf.edu/fitnessrecreation/" rel="external">Fitness &amp; Recreation Website</a></li>
+        <li><a href="https://www.xpiron.com/schedule/Access?pAction=0&amp;pUrl=ucsf" rel="external">Sign up for a Class</a></li>
+    </ol>
+</section>
+</script>
+
+<script type="text/ng-template" id="fitness/schedule.html">
+<section>
+<div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
+<div class="content" data-ng-show="loaded">
+    <h1>Group Fitness and Pools</h1>
+    <div>
+        <input id="ucsf-fitness-search" type="search" data-ng-model="query" placeholder="Search">
+        <select data-ng-model="filter.type">
+            <option value="all">Full Schedule</option>
+            <option value="mbclasses">Mission Bay Classes</option>
+            <option value="pclasses">Parnassus Classes</option>
+            <option value="mbopool">Mission Bay Outdoor Pool Lap/Family Swim</option>
+            <option value="mbipool">Mission Bay Indoor Pool Lap/Family Swim</option>
+            <option value="pipool">Parnassus Indoor Pool Lap/Family Swim</option>
+        </select>
+    </div>
+    <div>
+        <ul>
+            <li data-ng-repeat="class in filtered = (classes | filter:query | filter:filter)">
+                <ul>
+                    <li>{{ class.day }}, {{ class.date }}</li>
+                    <li>{{ class.startTime }} - {{ class.endTime }}</li>
+                    <li>{{ class.name }}</li>
+                    <li data-ng-show="class.instructorLastName">Instructor: {{ class.instructorFirstName }} {{ class.instructorLastName }}</li>
+                    <li>{{ class.location }}</li>
+                </ul>
+            </li>
+        </ul>
+        <div data-ng-hide="filtered.length">No results.</div>
+    </div>
+</div>
+<div class="content" data-ng-show="! classes.length && ! loading"><p>Fitness schedule data could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p></div>
+</section>
+</script>
+
+<script type="text/ng-template" id="library/help.html">
+
+<section>
+
+    <div class="menu detailed">
+        <ol>
+            <li data-ng-init="showAU=false"><a href="" data-ng-click="showAU=!showAU">Contact Us</a></li>
+        </ol>
+        <ol data-ng-show="showAU">
+            <li><a href="tel:+14154762337">(415) 476-2337<br><span class="smallprint">Parnassus</span></a></li>
+            <li><a href="tel:+14155144060">(415) 514-4060<br><span class="smallprint">Mission Bay</span></a></li>
+            <li><a href="mailto:LibraryHelp@ucsf.edu">Email</a></li>
+            <li><a href="mailto:LibraryHelp@ucsf.edu">Arrange a research consultation</a></li>
+        </ol>
+    </div>
+
+    <div class="menu detailed">
+        <ol>
+            <li><a rel="external" href="http://guides.library.ucsf.edu/">Getting Started Guides</a></li>
+        </ol>
+    </div>
+
+    <div class="menu detailed">
+        <ol>
+            <li data-ng-init="showGNA=false"><a href="" data-ng-click="showGNA=!showGNA">Get Full Text</a></li>
+        </ol>
+        <div data-ng-show="showGNA" class="content">
+            <div>
+                <p>Often, you must be authenticated as part of UCSF to get full text. If you are <strong>on campus</strong>, just connect to the UCSFwpa wifi network.</p>
+                <p>If you are off campus:</p>
+            </div>
+            <div>
+                <h4>EZproxy + MyAccess</h4>
+                <ul class="bulleted">
+                  <li>No set-up needed</li>
+                  <li>Requires only a web browser + MyAccess username and password</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Steps to use EZproxy</h4>
+                <ol class="numbered">
+                  <li>Start from mobile Library website.</li>
+                  <li>Click on a link to an article, database, ebook, etc.</li>
+                  <li>When prompted, log in with MyAccess.</li>
+                  <li>View all full text content to which UCSF Library subscribes.</li>
+                  <li>No need to log in again, as long as you remain logged into MyAccess.</li>
+                </ol>
+            </div>
+            <div>
+              <h4>What about vpn@UCSF?</h4>
+              <p>EZproxy does not replace <a rel="external" href="https://vpn.ucsf.edu/dana/home/index.cgi">vpn@UCSF</a> as they serve different purposes. University IT will continue to support VPN   for other academic activities requiring remote connection.</p>
+              <p>EZproxy, on the other hand, is a service provided by the Library only for remote access to library-licensed content.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu detailed">
+        <ol>
+            <li data-ng-init="showUW=false"><a data-ng-click="showUW=!showUW" href="">Use WiFi</a></li>
+        </ol>
+
+        <div data-ng-show="showUW" class="content">
+
+            <div>
+                <p>Wireless access allows UCSF personnel and students to connect a laptop computer, and in some cases a handheld mobile device, to the campus network and internet from many UCSF locations.</p>
+                <h4>Laptops</h4>
+                <ul class="bulleted">
+                    <li>Choose <strong>UCSFwpa</strong> from your list of possible WiFi connections.</li>
+                    <li>Log in using your MyAccess ID and password.</li>
+                    <li>Requires configuration of desktop client the first time.</li>
+                </ul>
+                <h4>Mobile Devices</h4>
+                <ul class="bulleted">
+                    <li>Choose <strong>UCSFwpa</strong> from your list of possible wifi connections.</li>
+                    <li>Log in  using your MyAccess ID and password.</li>
+                    <li>If prompted, accept certificate.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu detailed">
+        <ol>
+            <li data-ng-init="showRB=false"><a data-ng-click="showRB=!showRB" href="">Renew Books</a></li>
+        </ol>
+        <ol data-ng-show="showRB">
+            <li><a rel="external" href="http://ucsfcat.ucsf.edu/patroninfo/">Online:
+                <span class="smallprint">Log in to the Library Catalog</span>
+            </a></li>
+            <li class="menu-last"><a href="tel:+14154762336">Phone: (415) 476-2336</a></li>
+        </ol>
+    </div>
+
+</section>
+</script>
+
+<script type="text/ng-template" id="library/locations.html">
+<section>
+    <div class="menu detailed">
+        <ol>
+            <li data-ng-init="showP=false"><a href="" data-ng-click="showP=!showP">Parnassus Library</a></li>
+        </ol>
+    </div>
+
+    <div class="subordinate">
+        <div data-ng-show="showP && loading">
+            <progress>
+                <span class="spinner"></span>
+            </progress>
+        </div>
+
+        <div class="content" data-ng-show="showP && loaded">
+            <h2>Hours</h2>
+            <div>
+                <div class="timetable">
+                    <table>
+                        <tr ng-repeat="entry in locations.parnassus">
+                            <td>{{entry.day}} {{entry.date}}</td>
+                            <td>{{entry.text}}</td>
+                        </tr>
+                    </table>
+                    <div>
+                        <ul>
+                            <li>24/7 Hearst Room, Parnassus Library (with student ID)</li>
+                            <li>24/7 Computer Lab, S166 (with student ID)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content subordinate" data-ng-show="showP && loadError">
+            <p>Library hours data could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p>
+        </div>
+
+        <div data-ng-show="showP">
+            <div class="menu detailed">
+                <ol>
+                    <li><a href="#/maps/map/Kalmanovitz%20Library">Map<br><br><span class="smallprint">530 Parnassus Avenue<br>San Francisco, CA 94143-0840<br></span></a></li>
+                    <li><a href="tel:+14154762336">(415) 476-2336</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu detailed">
+        <ol>
+            <li data-ng-init="showMB=false"><a href="" data-ng-click="showMB=!showMB">Mission Bay Library</a></li>
+        </ol>
+    </div>
+
+    <div class="subordinate">
+        <div data-ng-show="showMB && loading">
+            <progress>
+                <span class="spinner"></span>
+            </progress>
+        </div>
+
+        <div class="content" data-ng-show="showMB && loaded">
+            <h2>Hours</h2>
+            <div>
+                <div class="timetable">
+                    <table>
+                        <tr ng-repeat="entry in locations.missionBay">
+                            <td>{{entry.day}} {{entry.date}}</td>
+                            <td>{{entry.text}}</td>
+                        </tr>
+                    </table>
+                    <div>
+                        <ul>
+                            <li>UCSF student access until midnight: Use eastern entrance with ID access. Enter library through computer lab CC151 with ID.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content subordinate" data-ng-show="showMB && loadError">
+            <p>Library hours data could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p>
+        </div>
+
+        <div data-ng-show="showMB">
+            <div class="menu detailed">
+                <ol>
+                    <li><a href="#/maps/map/Rutter%20Center">Map<br><br><span class="smallprint">William J. Rutter Conference Center<br>Room 150<br>1675 Owens Street<br>San Francisco, CA 94143-2119<br></span></a></li>
+                    <li><a href="tel:+14155144060">(415) 514-4060</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+</script>
+
+<script type="text/ng-template" id="library/mainMenu.html">
+<div class="menu detailed">
+	<h2>UCSF Library</h2>
+    <ol>
+        <li><a href="#/library/locations">Hours and Locations</a></li>
+        <li><a rel="external" href="http://ucsf.worldcat.org/m">Find Books and Journals</a></li>
+        <li><a rel="external" href="http://guides.library.ucsf.edu/content.php?pid=252446&amp;sid=2084303">Mobile Resources</a></li>
+        <li><a rel="external" href="http://tiny.ucsf.edu/reserve">Reserve a Study Room</a></li>
+        <li><a href="#/library/help/">Get Help</a></li>
+        <li><a rel="external" href="http://library.ucsf.edu/?ovrrdr=1">Full Library Site</a></li>
+    </ol>
+</div>
+</script>
+
+<script type="text/ng-template" id="main/mainMenu.html">
+<ol class="front">
+    <li>
+        <a href="#/shuttle"><img class="dashboard_icon" src="img/homescreen/shut-72.png" alt=""><br>Shuttle</a>
+    </li><li>
+        <a href="#/directory"><img class="dashboard_icon" src="img/homescreen/dir-72.png" alt=""><br>Directory</a>
+    </li><li>
+        <a href="#/news"><img class="dashboard_icon" src="img/homescreen/news-72.png" alt=""><br>News</a>
+    </li><li>
+        <a href="#/maps"><img class="dashboard_icon" src="img/homescreen/map-72.png" alt=""><br>Maps</a>
+    </li><li>
+        <a href="#/library"><img class="dashboard_icon" src="img/homescreen/lib-72.png" alt=""><br>Library</a>
+    </li><li>
+        <a href="#/fitness"><img class="dashboard_icon" src="img/homescreen/fit-72.png" alt=""><br>Fitness</a>
+    </li><li>
+        <a href="#/events"><img class="dashboard_icon" src="img/homescreen/cal-72.png" alt=""><br>Events</a>
+    </li><li>
+        <a href="#/social"><img class="dashboard_icon" src="img/homescreen/soc-72.png" alt=""><br>Social</a>
+    </li><li>
+        <a href="#/emergency"><img class="dashboard_icon" src="img/homescreen/emerg-72.png" alt=""><br>Emergency</a>
+    </li>
+</ol>
+</script>
+
+<script type="text/ng-template" id="maps/locations.html">
+<div class="menu detailed">
+	<h2>Locations</h2>
+	<ol>
+		<li data-ng-repeat="location in locationList">
+			<a href="#/maps/map/{{location.name}}">{{location.name}}</a>
+		</li>
+	</ol>
+</div>
+
+</script>
+
+<script type="text/ng-template" id="maps/mainMenu.html">
+<div class="menu detailed">
+	<h2>Maps</h2>
+    <ol>
+        <li><a href="#/maps/map/Parnassus">Parnassus</a></li>
+        <li><a href="#/maps/map/Mission%20Bay">Mission Bay</a></li>
+        <li><a href="#/maps/map/Mt.%20Zion">Mt. Zion</a></li>
+        <li><a href="#/maps/map/SFGH">San Francisco General Hospital</a></li>
+        <li><a href="#/maps/locations">Location List</a></li>
+    </ol>
+</div>
+</script>
+
+<script type="text/ng-template" id="maps/map.html">
+<progress><span class="spinner"></span></progress>
+<div id="map_canvas" class="map_canvas"></div>
+</script>
+
+<script type="text/ng-template" id="news/mainMenu.html">
+<section>
+<progress data-ng-hide="feed"><span class="spinner"></span></progress>
+<div data-ng-show="feed.entries && feed.entries.length>0" class="menu detailed">
+    <h2>UCSF News</h2>
+    <ol data-ng-repeat="entry in feed.entries">
+        <li>
+            <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
+                <div class="smallprint light">{{entry.dateTime.date}}</div>
+            </a>
+        </li>
+    </ol>
+</div>
+<div class="content" data-ng-cloak data-ng-show="feed && ! feed.entries || feed.entries.length===0">
+    <h2>UCSF News</h2>
+    <p>Content could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p>
+</div>
+</section>
+</script>
+
+<script type="text/ng-template" id="research/profile.html">
+<progress data-ng-show="loading"><div class="spinner"></div></progress>
+<div data-ng-hide="loading || loadError" data-ng-init="showFullNarrative=[]" data-ng-repeat="profile in profiles">
+    <div class="menu detailed">
+        <img data-ng-show="profile.PhotoURL" data-ng-src="http://src.sencha.io/80/80/{{profile.PhotoURL}}" alt="" class="research-photo">
+        <h1 class="research-header">{{profile.Name}}</h1>
+        <ol data-ng-show="profile.Narrative">
+            <li>
+                <a href="" data-ng-init="showFullNarrative[$index]=false" data-ng-click="showFullNarrative[$index]=!showFullNarrative[$index]">
+                    <span class="research-narrative" data-ng-hide="showFullNarrative[$index]">{{profile.Narrative.substring(0, profile.Narrative.substring(0, 200).lastIndexOf(' '))}}&hellip;</span>
+                    <span class="research-narrative" data-ng-show="showFullNarrative[$index]">{{profile.Narrative}}</span>
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="content" data-ng-show="profile.Keywords">
+        <h1 class="light">Research Interests</h1>
+        <ol class="research-interests">
+            <li data-ng-repeat="keyword in profile.Keywords">{{keyword}}</li>
+        </ol>
+    </div>
+    <div class="menu detailed" data-ng-show="profile.Publications">
+        <h1 class="content-first light">Publications</h1>
+        <ol>
+            <li data-ng-repeat="publication in profile.Publications" data-ng-show="publication.PublicationTitle">
+                <p data-ng-hide="publication.PublicationSource[0].PublicationSourceURL">
+                    <span class="smallprint">{{publication.PublicationTitle}}</span>
+                </p>
+                <a data-ng-show="publication.PublicationSource[0].PublicationSourceURL" href="{{publication.PublicationSource[0].PublicationSourceURL}}" rel="external">
+                    <span class="smallprint">{{publication.PublicationTitle}}</span>
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="menu" data-ng-show="profile.ProfilesURL">
+        <ol>
+            <li>
+                <a href="{{profile.ProfilesURL}}" rel="external">Full Research Profile</a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div data-ng-show="loadError" class="content">
+  <p class="info">An error occurred. Please <a href="" data-ng-click="load()">try again</a>.</p>
+</div>
+
+</script>
+
+<script type="text/ng-template" id="shuttle/mainMenu.html">
+<div class="menu detailed">
+    <h2>UCSF Shuttles</h2>
+    <ol>
+<!--[if gte IE 9]><!-->
+        <li>
+            <a href="#/shuttle/planner">Trip Planner</a>
+        </li>
+<!--
+<![endif]-->
+        <li>
+            <a href="#/shuttle/list">Shuttles By Route</a>
+        </li>
+        <li>
+            <a href="#/shuttle/locations">Shuttles By Location</a>
+        </li>
+    </ol>
+</div>
+</script>
+
+<script type="text/ng-template" id="shuttle/planner.html">
+<section>
+<div data-ng-show="stopsLoading || planLoading"><progress><span class="spinner"></span></progress></div>
+<div data-ng-show="planLoaded" class="content">
+    <h2>Suggested Routes</h2>
+    <p data-ng-show="!itineraries.length">No options found.</p>
+    <div data-ng-repeat="itinerary in itineraries">
+        <h3>Option {{itinerary.index}}</h3>
+        <h4>{{itinerary.startTimeFormatted}} - {{itinerary.endTimeFormatted}} ({{itinerary.durationFormatted}} mins)</h4>
+        <ol class="shuttle-plan">
+            <li data-ng-repeat="leg in itinerary.legs">
+                <ul data-ng-show="leg.bus">
+                    <li><strong>From:</strong> {{leg.bus.fromName}}</li>
+                    <li><strong>To:</strong> {{leg.bus.toName}}</li>
+                    <li><strong>Shuttle:</strong> {{leg.bus.route}} <div class="shuttle-color {{leg.bus.routeId}}"></div></li>
+                    <li><strong>Depart:</strong> {{leg.bus.startTime}}</li>
+                    <li><strong>Arrive:</strong> {{leg.bus.endTime}}</li>
+                </ul>
+                <ul data-ng-show="leg.walk">
+                    <li><strong>Walk to:</strong> {{leg.walk.toName}}</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="content" data-ng-show="loadError"><p>Trip planner could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p></div>
+<form data-ng-show="stopsLoaded" data-ng-submit="plan()">
+    <h2>Trip Planner</h2>
+    <select data-ng-model="begin" data-ng-options="'From ' + stop.stopName for stop in stops" name="begin">
+    </select>
+    <button type="button" data-ng-click="tmp=begin;begin=end;end=tmp" class="reverse_trip">&uarr;&darr;</button>
+    <select data-ng-model="end" data-ng-options="'To ' + stop.stopName for stop in stops" name="end">
+    </select>
+    <fieldset name="datetime">
+        <legend>
+            <select data-ng-model="when" class="compact" name="when">
+                <option value="now">Leave now</option>
+                <option value="depart">Depart at</option>
+                <option value="arrive">Arrive by</option>
+            </select>
+        </legend>
+        <select data-ng-disabled="when=='now'" data-ng-model="time" class="compact" name="time">
+            <option value="6:00 AM">6:00 AM</option>
+            <option value="6:15 AM">6:15 AM</option>
+            <option value="6:30 AM">6:30 AM</option>
+            <option value="6:45 AM">6:45 AM</option>
+            <option value="7:00 AM">7:00 AM</option>
+            <option value="7:15 AM">7:15 AM</option>
+            <option value="7:30 AM">7:30 AM</option>
+            <option value="7:45 AM">7:45 AM</option>
+            <option value="8:00 AM">8:00 AM</option>
+            <option value="8:15 AM">8:15 AM</option>
+            <option value="8:30 AM">8:30 AM</option>
+            <option value="8:45 AM">8:45 AM</option>
+            <option value="9:00 AM">9:00 AM</option>
+            <option value="9:15 AM">9:15 AM</option>
+            <option value="9:30 AM">9:30 AM</option>
+            <option value="9:45 AM">9:45 AM</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="10:15 AM">10:15 AM</option>
+            <option value="10:30 AM">10:30 AM</option>
+            <option value="10:45 AM">10:45 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="11:15 AM">11:15 AM</option>
+            <option value="11:30 AM">11:30 AM</option>
+            <option value="11:45 AM">11:45 AM</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="12:15 PM">12:15 PM</option>
+            <option value="12:30 PM">12:30 PM</option>
+            <option value="12:45 PM">12:45 PM</option>
+            <option value="1:00 PM">1:00 PM</option>
+            <option value="1:15 PM">1:15 PM</option>
+            <option value="1:30 PM">1:30 PM</option>
+            <option value="1:45 PM">1:45 PM</option>
+            <option value="2:00 PM">2:00 PM</option>
+            <option value="2:15 PM">2:15 PM</option>
+            <option value="2:30 PM">2:30 PM</option>
+            <option value="2:45 PM">2:45 PM</option>
+            <option value="3:00 PM">3:00 PM</option>
+            <option value="3:15 PM">3:15 PM</option>
+            <option value="3:30 PM">3:30 PM</option>
+            <option value="3:45 PM">3:45 PM</option>
+            <option value="4:00 PM">4:00 PM</option>
+            <option value="4:15 PM">4:15 PM</option>
+            <option value="4:30 PM">4:30 PM</option>
+            <option value="4:45 PM">4:45 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+            <option value="5:15 PM">5:15 PM</option>
+            <option value="5:30 PM">5:30 PM</option>
+            <option value="5:45 PM">5:45 PM</option>
+            <option value="6:00 PM">6:00 PM</option>
+            <option value="6:15 PM">6:15 PM</option>
+            <option value="6:30 PM">6:30 PM</option>
+            <option value="6:45 PM">6:45 PM</option>
+            <option value="7:00 PM">7:00 PM</option>
+            <option value="7:15 PM">7:15 PM</option>
+            <option value="7:30 PM">7:30 PM</option>
+            <option value="7:45 PM">7:45 PM</option>
+            <option value="8:00 PM">8:00 PM</option>
+            <option value="8:15 PM">8:15 PM</option>
+            <option value="8:30 PM">8:30 PM</option>
+            <option value="8:45 PM">8:45 PM</option>
+            <option value="9:00 PM">9:00 PM</option>
+        </select>
+        <select data-ng-model="date" data-ng-disabled="when=='now'" class="compact" name="date">
+            <option value="0">Today</option>
+            <option value="1">Tomorrow</option>
+            <option value="2">In 2 days</option>
+            <option value="3">In 3 days</option>
+        </select>
+    </fieldset>
+    <input data-ng-disabled="isLoading" type="submit" name="route" value="Route Trip" />
+</form>
+</section>
+
+</script>
+
+<script type="text/ng-template" id="shuttle/routeList.html">
+<section>
+<div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
+<div data-ng-hide="loading" class="menu detailed">
+    <h2>Shuttles<span data-ng-show="location"> for {{location}}</span></h2>
+    <ol>
+        <li data-ng-repeat="route in routes | orderBy: 'routeShortName'">
+            <a href="#/shuttle/schedule/{{route.id.id}}"><div class="shuttle-color {{route.id.id}}"></div> {{route.routeShortName}}</a>
+        </li>
+    </ol>
+    <p data-ng-show="!routes.length && !loadError">No shuttles found.</p>
+    <p data-ng-show="loadError">Could not load content. Please <a href="" data-ng-click="load()">try again</a>.</p>
+</div>
+</section>
+</script>
+
+<script type="text/ng-template" id="shuttle/schedule.html">
+<section>
+    <div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
+    <div class="content" data-ng-hide="loading">
+        <h2><span class="shuttle-color {{routeId}}"></span>{{routeShortName}} Shuttle</h2>
+        <h3>{{stopName}}</h3>
+
+        <p data-ng-show="loadError">Could not load schedule data. Please <a href="" data-ng-click="load()">try again</a>.</p>
+
+        <div data-ng-show="loaded">
+
+            <div data-ng-show="predictions.times" class="timetable">
+                <h4>GPS</h4>
+                <p>Shuttle in:</p>
+                <ol>
+                    <li data-ng-repeat="time in predictions.times">{{time}} minute<span data-ng-hide="time===1">s</span></li>
+                </ol>
+            </div>
+
+            <div  data-ng-show="loaded" class="timetable">
+                <h4>Schedule</h4>
+                <button data-ng-click="changeDay(-1)">Previous Day</button><button data-ng-click="changeDay(1)">Next Day</button>
+                <h4>{{startTime | date:'EEE MMM d yyyy'}}</h4>
+
+                <ol>
+                    <li data-ng-repeat="time in times">{{time.time * 1000 | date:'shortTime'}}<span class="smallprint" data-ng-show="time.trip.tripHeadsign"> {{time.trip.tripHeadsign}}</span></li>
+                    <li data-ng-hide="times.length || loadError">No times found for selected date.</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</section>
+</script>
+
+<script type="text/ng-template" id="shuttle/stopList.html">
+<section>
+<div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
+<div data-ng-hide="loading">
+    <div data-ng-show="routeId" class="menu">
+        <h2><span data-ng-show="routeId" class="shuttle-color {{routeId}}"></span>{{routeShortName}} </span>Shuttle</h2>
+    </div>
+    <div data-ng-hide="routeId" class="menu">
+        <h2>Shuttle Locations</h2>
+    </div>
+    <div class="menu">
+        <h3 data-ng-show="routeLongName">{{routeLongName}}</h3>
+        <ol>
+            <li data-ng-repeat="stop in stops | orderBy: 'stopName'">
+                <a href="#/shuttle/schedule/{{routeId}}/{{stop.id.id}}">{{stop.stopName}}</a>
+            </li>
+        </ol>
+        <p data-ng-show="loadError">Could not load content. Please <a href="" data-ng-click="load()">try again</a>.</p>
+    </div>
+</section>
+</script>
+
+<script type="text/ng-template" id="social/mainMenu.html">
+<div class="menu detailed">
+	<h2>UCSF Social Media</h2>
+    <ol>
+        <li><a rel="external" href="http://www.twitter.com/ucsf">Twitter</a></li>
+        <li><a rel="external" href="http://www.youtube.com/ucsf">YouTube</a></li>
+        <li><a rel="external" href="http://www.facebook.com/ucsf">Facebook</a></li>
+    </ol>
+</div>
+</script>
+<!-- End Templates -->
+
+
+        <header class="main-header" data-ng-cloak="">
+            <div class="logo"></div>
+        </header>
+        <div data-ng-view="" data-ng-animate="{enter: &apos;transition-in&apos;}">
+        </div>
+        <footer class="main-footer" data-ng-cloak="">
+            <p>&copy; 2013 Regents of the University of California<br>
+                <a href="#/about">About</a> | <a href="#/feedback">Feedback</a>
+            </p>
+        </footer>
+        <div data-ng-cloak="" data-ng-controller="navigationController">
+            <button data-ng-hide="hideNavigation" data-ng-animate="{show: &apos;transition-in&apos;}" onclick="window.history.go(-1);" class="nav-button">Back</button>
+        </div>
+    </div>
+    <script src="js/campuskit.js"></script>
+    <script src="js/modules/angular.js"></script>
+    <script src="js/modules/angularytics.js"></script>
+    <script src="js/modules/main.js"></script>
+    <script src="js/modules/rssReader.js"></script>
+    <script src="http://apis.ucsf.edu/jsapi?shuttle&amp;person&amp;fitness&amp;library"></script>
+    <script src="js/modules/shuttle.js"></script>
+    <script src="js/modules/directory.js"></script>
+    <script src="js/modules/news.js"></script>
+    <script src="js/modules/maps.js"></script>
+    <script src="js/modules/library.js"></script>
+    <script src="js/modules/fitness.js"></script>
+    <script src="js/modules/events.js"></script>
+    <script src="js/modules/social.js"></script>
+    <script src="js/modules/emergency.js"></script>
+    <script src="js/modules/about.js"></script>
+    <script src="js/modules/feedback.js"></script>
+    <script src="js/modules/research.js"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+!function(){"use strict";angular.module("social",[]).config(["$routeProvider",function(a){a.when("/social",{templateUrl:"social/mainMenu.html"})}])}();

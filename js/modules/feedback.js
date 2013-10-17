@@ -1,0 +1,1 @@
+!function(){"use strict";angular.module("feedback",[]).config(["$routeProvider",function(a){a.when("/feedback",{templateUrl:"feedback/mainMenu.html"})}])}();
