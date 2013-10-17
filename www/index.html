@@ -25,14 +25,6 @@
     <div id="ng-app" data-ng-app="main">
 
 <!-- Begin Templates -->
-<script type="text/ng-template" id="about/mainMenu.html">
-<div class="content">
-    <h2>About</h2>
-    <p>Version 2.2.3</p>
-    <p>This app is built with <a href="https://github.com/Trott/CampusKit" rel="external">CampusKit</a>. CampusKit is an open source project created by the UCSF Library &amp; Center for Knowledge Management.</p>
-</div>
-</script>
-
 <script type="text/ng-template" id="directory/searchForm.html">
 <div data-ng-controller="directorySearchController">
 
@@ -129,16 +121,6 @@
     </ol>
 </section>
 
-</script>
-
-<script type="text/ng-template" id="feedback/mainMenu.html">
-<div class="menu">
-    <h2>Feedback</h2>
-    <ol>
-        <li><a rel="external" href="http://campuslifeservices.ucsf.edu/transportation/feedback/">Shuttle Service</a>
-        <li><a rel="external" href="https://ucsf.co1.qualtrics.com/SE/?SID=SV_5hwQLaXoodjWQ29">This App (UCSF)</a>
-    </ol>
-</div>
 </script>
 
 <script type="text/ng-template" id="fitness/locations.html">
@@ -784,11 +766,6 @@ Fax: <a href="tel:(415) 514-4820">(415) 514-4820</a><br/>
         </header>
         <div data-ng-view="" data-ng-animate="{enter: &apos;transition-in&apos;}">
         </div>
-        <footer class="main-footer" data-ng-cloak="">
-            <p>&copy; 2013 Regents of the University of California<br>
-                <a href="#/about">About</a> | <a href="#/feedback">Feedback</a>
-            </p>
-        </footer>
         <div data-ng-cloak="" data-ng-controller="navigationController">
             <button data-ng-hide="hideNavigation" data-ng-animate="{show: &apos;transition-in&apos;}" onclick="window.history.go(-1);" class="nav-button">Back</button>
         </div>
