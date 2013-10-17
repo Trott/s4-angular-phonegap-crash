@@ -16,16 +16,13 @@
                 $scope.loadError = true;
             };
 
-            var success = function (data) {
-                $scope.loading= false;
-                $scope.routes = data.routes || [];
-            };
-
             var xhr = new window.XMLHttpRequest();
             xhr.open('GET', 'http://apis.ucsf.edu/shuttle/routes');
             xhr.onload = function () {
                 try {
-                    success(JSON.parse(xhr.responseText));
+                    var data = JSON.parse(xhr.responseText);
+                    $scope.loading = false;
+                    $scope.routes = data.routes || [];
                 } catch (e) {
                     failure();
                 }
