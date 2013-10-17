@@ -1,1 +1,109 @@
-!function(){"use strict";angular.module("rssReader",[]).factory("rssReaderService",["$q",function(a){return{getRssData:function(b,c,d){var e=a.defer(),f=d.localStorageKey,g=function(a){var b;if(Modernizr.localstorage){b=window.localStorage.getItem(a);if(null!==b)return JSON.parse(b)}return{}};if(!navigator.onLine){f?e.resolve(g(f).feed):e.resolve({});return e.promise}Modernizr.load([{load:"http://www.google.com/jsapi",callback:function(){var a=function(){f?e.resolve(g(f).feed):e.resolve({});c.$apply()};"object"!=typeof google?a():google.load("feeds","1",{nocss:!0,callback:function(){var d=new google.feeds.Feed(b);d.setNumEntries(10);d.load(function(b){var d,g,h,i,j,k,l,m={};if(b.error)a();else{m={feed:this.feed};for(d=0;d<m.feed.entries.length;d+=1){g=m.feed.entries[d];h={};i=new Date(g.publishedDate);h.date=i.toLocaleDateString();k=i.getMinutes();10>k&&(k="0"+k);j=i.getHours();l=12>j?"AM":"PM";j>12&&(j-=12);0===j&&(j=12);h.time=j+":"+k+" "+l;g.dateTime=h}e.resolve(m.feed);Modernizr.localstorage&&window.localStorage.setItem(f,JSON.stringify(m))}c.$apply()})}})}}]);return e.promise}}}])}();
+(function () {
+    'use strict';
+    angular.module('rssReader', [])
+    .factory('rssReaderService', ['$q', function ($q) {
+        return {
+            getRssData: function (feedUrl, scope, options) {
+                var deferred = $q.defer();
+
+                var localStorageKey = options.localStorageKey;
+                var loadFromStorage = function (storageId) {
+                    var stored;
+                    if (Modernizr.localstorage) {
+                        stored = window.localStorage.getItem(storageId);
+                        if (stored !== null) {
+                            return JSON.parse(stored);
+                        }
+                    }
+                    return {};
+                };
+
+                if (! navigator.onLine) {
+                    if (localStorageKey) {
+                        deferred.resolve(loadFromStorage(localStorageKey).feed);
+                    } else {
+                        deferred.resolve({});
+                    }
+                    return deferred.promise;
+                }
+
+                Modernizr.load([{load:'http://www.google.com/jsapi', callback: function() {
+                    var errorFallback = function () {
+                        if (localStorageKey) {
+                            deferred.resolve(loadFromStorage(localStorageKey).feed);
+                        } else {
+                            deferred.resolve({});
+                        }
+                        scope.$apply();
+                    };
+
+                    if (typeof google !== "object") {
+                        errorFallback();
+                    } else {
+                        google.load("feeds", "1",
+                            {
+                                nocss: true,
+                                callback: function () {
+                                    var feed = new google.feeds.Feed(feedUrl);
+
+                                    feed.setNumEntries(10);
+
+                                    feed.load(function (result) {
+                                        var i,
+                                        thisEntry,
+                                        dateTime,
+                                        dateObject,
+                                        hours,
+                                        minutes,
+                                        designation,
+                                        content = {};
+
+                                        if (! result.error) {
+                                            content = {
+                                                "feed": this.feed
+                                            };
+                                            for (i = 0; i < content.feed.entries.length; i = i + 1) {
+                                                thisEntry = content.feed.entries[i];
+                                                dateTime = {};
+                                                dateObject = new Date(thisEntry.publishedDate);
+                                                dateTime.date = dateObject.toLocaleDateString();
+
+                                                minutes = dateObject.getMinutes();
+                                                if (minutes < 10) {
+                                                    minutes = "0" + minutes;
+                                                }
+                                                hours = dateObject.getHours();
+                                                designation = hours < 12 ? 'AM' : 'PM';
+                                                if (hours > 12) {
+                                                    hours = hours - 12;
+                                                }
+                                                if (hours === 0) {
+                                                    hours = 12;
+                                                }
+
+                                                dateTime.time = hours + ':' +
+                                                    minutes + ' ' +
+                                                    designation;
+
+                                                thisEntry.dateTime = dateTime;
+                                            }
+
+                                            deferred.resolve(content.feed);
+                                            if (Modernizr.localstorage) {
+                                                window.localStorage.setItem(localStorageKey, JSON.stringify(content));
+                                            }
+                                        } else {
+                                            errorFallback();
+                                        }
+                                        scope.$apply();
+                                    });
+                                }
+                            }
+                        );
+                    }
+                }}]);
+                return deferred.promise;
+            }
+        };
+    }]);
+}());
