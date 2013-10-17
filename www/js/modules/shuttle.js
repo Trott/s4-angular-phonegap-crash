@@ -11,19 +11,25 @@
             $scope.loading = true;
             $scope.loadError = false;
 
-            UCSF.Shuttle.routes(
-                {},
-                function (data) {
-                    $scope.loading = false;
-                    $scope.routes = data.routes || [];
-                    $scope.$apply();
-                },
-                function () {
-                    $scope.loading = false;
-                    $scope.loadError = true;
-                }
-            );
+            var failure = function () {
+                $scope.loading = false;
+                $scope.loadError = true;
+            };
 
+            var success = function (data) {
+                $scope.loading= false;
+                $scope.routes = data.routes || [];
+                $scope.$apply();
+            };
+
+            var xhr = new window.XMLHttpRequest();
+            xhr.open('GET', 'http://apis.ucsf.edu/shuttle/routes');
+            xhr.onload = function () {
+                success(JSON.parse(xhr.responseText));
+            };
+            xhr.onerror=failure;
+
+            xhr.send(null);
         }]
     );
 }());
