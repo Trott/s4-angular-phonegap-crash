@@ -11,7 +11,7 @@
                     return deferred.promise;
                 }
 
-                Modernizr.load([{load:'http://www.google.com/jsapi', callback: function() {
+                (function() {
                     var errorFallback = function () {
                         deferred.resolve({});
                         scope.$apply();
@@ -78,7 +78,7 @@
                             }
                         );
                     }
-                }}]);
+                }());
                 return deferred.promise;
             }
         };
