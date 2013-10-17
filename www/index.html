@@ -107,7 +107,6 @@ Millberry Fitness and Recreation Center<br />
 San Francisco California 94143<br />
 Phone: <a href="tel:(415) 476-1115">(415) 476-1115</a><br />
 Fax: <a href="tel:(415) 502-5887">(415) 502-5887</a><br/>
-<a href="#/maps/map/Millberry%20Union">Map</a>
 </p>
 <h1 class="light">Mission Bay</h1>
 <p>
@@ -116,7 +115,6 @@ Bakar Fitness and Recreation Center<br />
 San Francisco California 94158<br />
 Phone: <a href="tel:(415) 514-4545">(415) 514-4545</a><br />
 Fax: <a href="tel:(415) 514-4820">(415) 514-4820</a><br/>
-<a href="#/maps/map/Rutter%20Center">Map</a>
 </p>
 </div>
 </script>
@@ -173,8 +171,6 @@ Fax: <a href="tel:(415) 514-4820">(415) 514-4820</a><br/>
     <li>
         <a href="#/news"><img class="dashboard_icon" src="img/homescreen/news-72.png" alt=""><br>News</a>
     </li><li>
-        <a href="#/maps"><img class="dashboard_icon" src="img/homescreen/map-72.png" alt=""><br>Maps</a>
-    </li><li>
         <a href="#/fitness"><img class="dashboard_icon" src="img/homescreen/fit-72.png" alt=""><br>Fitness</a>
     </li><li>
         <a href="#/events"><img class="dashboard_icon" src="img/homescreen/cal-72.png" alt=""><br>Events</a>
@@ -184,36 +180,6 @@ Fax: <a href="tel:(415) 514-4820">(415) 514-4820</a><br/>
         <a href="#/emergency"><img class="dashboard_icon" src="img/homescreen/emerg-72.png" alt=""><br>Emergency</a>
     </li>
 </ol>
-</script>
-
-<script type="text/ng-template" id="maps/locations.html">
-<div class="menu detailed">
-	<h2>Locations</h2>
-	<ol>
-		<li data-ng-repeat="location in locationList">
-			<a href="#/maps/map/{{location.name}}">{{location.name}}</a>
-		</li>
-	</ol>
-</div>
-
-</script>
-
-<script type="text/ng-template" id="maps/mainMenu.html">
-<div class="menu detailed">
-	<h2>Maps</h2>
-    <ol>
-        <li><a href="#/maps/map/Parnassus">Parnassus</a></li>
-        <li><a href="#/maps/map/Mission%20Bay">Mission Bay</a></li>
-        <li><a href="#/maps/map/Mt.%20Zion">Mt. Zion</a></li>
-        <li><a href="#/maps/map/SFGH">San Francisco General Hospital</a></li>
-        <li><a href="#/maps/locations">Location List</a></li>
-    </ol>
-</div>
-</script>
-
-<script type="text/ng-template" id="maps/map.html">
-<progress><span class="spinner"></span></progress>
-<div id="map_canvas" class="map_canvas"></div>
 </script>
 
 <script type="text/ng-template" id="news/mainMenu.html">
