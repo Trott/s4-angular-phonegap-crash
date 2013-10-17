@@ -11,30 +11,25 @@
             $scope.loading = true;
             $scope.loadError = false;
 
-            var fetchRoutes = function(success, failure) {
-                failure = failure || function (obj) {window.alert(obj.statusText||'An error occurred. Please try again.');};
-                var xhr = new window.XMLHttpRequest();
-                xhr.open('GET', 'http://apis.ucsf.edu/shuttle/routes');
-                xhr.onload = function () {
-                    success(JSON.parse(xhr.responseText));
-                };
-                xhr.onerror=failure;
-
-                xhr.send(null);
+            var failure = function () {
+                $scope.loading = false;
+                $scope.loadError = true;
             };
 
-            fetchRoutes(
-                function (data) {
-                    $scope.loading = false;
-                    $scope.routes = data.routes || [];
-                    $scope.$apply();
-                },
-                function () {
-                    $scope.loading = false;
-                    $scope.loadError = true;
-                }
-                );
+            var success = function (data) {
+                $scope.loading= false;
+                $scope.routes = data.routes || [];
+                $scope.$apply();
+            };
 
+            var xhr = new window.XMLHttpRequest();
+            xhr.open('GET', 'http://apis.ucsf.edu/shuttle/routes');
+            xhr.onload = function () {
+                success(JSON.parse(xhr.responseText));
+            };
+            xhr.onerror=failure;
+
+            xhr.send(null);
         }]
-        );
+    );
 }());
