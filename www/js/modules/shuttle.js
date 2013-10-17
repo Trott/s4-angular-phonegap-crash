@@ -7,29 +7,21 @@
     }])
     .controller(
         'routeMenuShuttleController',
-        ['$scope', function ($scope) {
+        ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.loading = true;
             $scope.loadError = false;
 
-            var failure = function () {
+            var callback = function () {
                 $scope.loading = false;
-                $scope.loadError = true;
+                $scope.routes = [
+                    {name: 'Blue'},
+                    {name: 'Yellow'},
+                    {name: 'Not Green'}
+                ];
             };
 
-            var success = function (data) {
-                $scope.loading= false;
-                $scope.routes = data.routes || [];
-                $scope.$apply();
-            };
-
-            var xhr = new window.XMLHttpRequest();
-            xhr.open('GET', 'http://apis.ucsf.edu/shuttle/routes');
-            xhr.onload = function () {
-                success(JSON.parse(xhr.responseText));
-            };
-            xhr.onerror=failure;
-
-            xhr.send(null);
+            // Using $timeout to sort of fake an XHR just to rule out XHR as a cause
+            $timeout(callback, 500);
         }]
     );
 }());
