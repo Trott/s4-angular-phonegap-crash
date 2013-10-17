@@ -11,22 +11,19 @@
             $scope.loading = true;
             $scope.loadError = false;
 
-            $scope.load = function () {
-                UCSF.Shuttle.routes(
-                    {},
-                    function (data) {
-                        $scope.loading = false;
-                        $scope.routes = data.routes || [];
-                        $scope.$apply();
-                    },
-                    function () {
-                        $scope.loading = false;
-                        $scope.loadError = true;
-                    }
-                );
-            };
+            UCSF.Shuttle.routes(
+                {},
+                function (data) {
+                    $scope.loading = false;
+                    $scope.routes = data.routes || [];
+                    $scope.$apply();
+                },
+                function () {
+                    $scope.loading = false;
+                    $scope.loadError = true;
+                }
+            );
 
-            $scope.load();
         }]
     );
 }());
