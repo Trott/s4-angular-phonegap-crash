@@ -6,34 +6,14 @@
             getRssData: function (feedUrl, scope, options) {
                 var deferred = $q.defer();
 
-                var localStorageKey = options.localStorageKey;
-                var loadFromStorage = function (storageId) {
-                    var stored;
-                    if (Modernizr.localstorage) {
-                        stored = window.localStorage.getItem(storageId);
-                        if (stored !== null) {
-                            return JSON.parse(stored);
-                        }
-                    }
-                    return {};
-                };
-
                 if (! navigator.onLine) {
-                    if (localStorageKey) {
-                        deferred.resolve(loadFromStorage(localStorageKey).feed);
-                    } else {
-                        deferred.resolve({});
-                    }
+                    deferred.resolve({});
                     return deferred.promise;
                 }
 
                 Modernizr.load([{load:'http://www.google.com/jsapi', callback: function() {
                     var errorFallback = function () {
-                        if (localStorageKey) {
-                            deferred.resolve(loadFromStorage(localStorageKey).feed);
-                        } else {
-                            deferred.resolve({});
-                        }
+                        deferred.resolve({});
                         scope.$apply();
                     };
 
@@ -89,9 +69,6 @@
                                             }
 
                                             deferred.resolve(content.feed);
-                                            if (Modernizr.localstorage) {
-                                                window.localStorage.setItem(localStorageKey, JSON.stringify(content));
-                                            }
                                         } else {
                                             errorFallback();
                                         }
