@@ -83,95 +83,12 @@
 
 </script>
 
-<script type="text/ng-template" id="fitness/locations.html">
-<div class="content">
-<h1 class="content-first">Hours &amp; Locations</h1>
-<h1 class="light">Regular Hours</h1>
-<div>
-<p>The Millberry and Bakar Fitness and Recreation Centers have the same hours:</p>
-<div>
-<ul>
-<li>Mon - Fri: 5:30 am - 10:00 pm</li>
-<li>Sat - Sun: 7:30 am - 8:00 pm</li>
-</ul>
-</div>
-<p>For Holiday and Member Services Hours:<br/>
-<a rel="external" href="http://campuslifeservices.ucsf.edu/fitnessrecreation/article/248">Parnassus</a><br/>
-<a rel="external" href="http://campuslifeservices.ucsf.edu/fitnessrecreation/article/249">Mission Bay</a>
-</p>
-</div>
-<h1 class="light">Parnassus</h1>
-<p>
-Millberry Fitness and Recreation Center<br />
-500 Parnassus Avenue<br />
-San Francisco California 94143<br />
-Phone: <a href="tel:(415) 476-1115">(415) 476-1115</a><br />
-Fax: <a href="tel:(415) 502-5887">(415) 502-5887</a><br/>
-</p>
-<h1 class="light">Mission Bay</h1>
-<p>
-Bakar Fitness and Recreation Center<br />
-1675 Owens Street<br />
-San Francisco California 94158<br />
-Phone: <a href="tel:(415) 514-4545">(415) 514-4545</a><br />
-Fax: <a href="tel:(415) 514-4820">(415) 514-4820</a><br/>
-</p>
-</div>
-</script>
 
-<script type="text/ng-template" id="fitness/mainMenu.html">
-<section class="menu detailed">
-    <h2>Fitness</h2>
-    <ol>
-        <li><a href="#/fitness/schedule">Group Fitness and Pools</a></li>
-        <li><a href="#/fitness/locations">Hours and Locations</a></li>
-        <li class="menu-last"><a href="http://campuslifeservices.ucsf.edu/fitnessrecreation/" rel="external">Fitness &amp; Recreation Website</a></li>
-        <li><a href="https://www.xpiron.com/schedule/Access?pAction=0&amp;pUrl=ucsf" rel="external">Sign up for a Class</a></li>
-    </ol>
-</section>
-</script>
-
-<script type="text/ng-template" id="fitness/schedule.html">
-<section>
-<div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
-<div class="content" data-ng-show="loaded">
-    <h1>Group Fitness and Pools</h1>
-    <div>
-        <input id="ucsf-fitness-search" type="search" data-ng-model="query" placeholder="Search">
-        <select data-ng-model="filter.type">
-            <option value="all">Full Schedule</option>
-            <option value="mbclasses">Mission Bay Classes</option>
-            <option value="pclasses">Parnassus Classes</option>
-            <option value="mbopool">Mission Bay Outdoor Pool Lap/Family Swim</option>
-            <option value="mbipool">Mission Bay Indoor Pool Lap/Family Swim</option>
-            <option value="pipool">Parnassus Indoor Pool Lap/Family Swim</option>
-        </select>
-    </div>
-    <div>
-        <ul>
-            <li data-ng-repeat="class in filtered = (classes | filter:query | filter:filter)">
-                <ul>
-                    <li>{{ class.day }}, {{ class.date }}</li>
-                    <li>{{ class.startTime }} - {{ class.endTime }}</li>
-                    <li>{{ class.name }}</li>
-                    <li data-ng-show="class.instructorLastName">Instructor: {{ class.instructorFirstName }} {{ class.instructorLastName }}</li>
-                    <li>{{ class.location }}</li>
-                </ul>
-            </li>
-        </ul>
-        <div data-ng-hide="filtered.length">No results.</div>
-    </div>
-</div>
-<div class="content" data-ng-show="! classes.length && ! loading"><p>Fitness schedule data could not be loaded. Please <a href="" data-ng-click="load()">try again</a>.</p></div>
-</section>
-</script>
 
 <script type="text/ng-template" id="main/mainMenu.html">
 <ol class="front">
     <li>
         <a href="#/news"><img class="dashboard_icon" src="img/homescreen/news-72.png" alt=""><br>News</a>
-    </li><li>
-        <a href="#/fitness"><img class="dashboard_icon" src="img/homescreen/fit-72.png" alt=""><br>Fitness</a>
     </li><li>
         <a href="#/events"><img class="dashboard_icon" src="img/homescreen/cal-72.png" alt=""><br>Events</a>
     </li><li>
