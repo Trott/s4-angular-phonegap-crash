@@ -25,76 +25,10 @@
     <div id="ng-app" data-ng-app="main">
 
 <!-- Begin Templates -->
-<script type="text/ng-template" id="emergency/mainMenu.html">
-<div class="menu detailed">
-	<h2>Emergency Phone Numbers</h2>
-    <ol>
-        <li><a href="tel:+911">911 <span class="smallprint">for emergencies only</span></a></li>
-        <li><a href="tel:+14154761414">UCSF Police Non-Emergency<br><span class="smallprint">(415) 476-1414</span></a></li>
-        <li><a href="tel:+14158857890">UCSF Medical Center Security<br><span class="smallprint">(415) 885-7890</span></a></li>
-        <li><a href="tel:+14155024000">Campus Emergency Information Hotline<br><span class="smallprint">(415) 502-4000</span></a></li>
-        <li><a href="tel:+18008738232">Back-up Campus Emergency Hotline<br><span class="smallprint">1 (800) 873-8232</span></a></li>
-        <li><a href="tel:+14158857828">UCSF Medical Center Information Hotline<br><span class="smallprint">(415) 885-7828</span></a></li>
-    </ol>
-</div>
-</script>
-
-<script type="text/ng-template" id="events/academicEvents.html">
-<section class="menu detailed">
-    <h2>Featured Academic Events</h2>
-    <progress data-ng-hide="feed"><span class="spinner"></span></progress>
-
-    <ol data-ng-repeat="entry in feed.entries">
-        <li>
-            <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
-                <div class="smallprint light">{{entry.dateTime.date}}</div>
-                <div class="smallprint light">{{entry.dateTime.time}}</div>
-            </a>
-        </li>
-    </ol>
-</section>
-
-</script>
-
-<script type="text/ng-template" id="events/mainMenu.html">
-<div class="menu detailed">
-	<h2>Events</h2>
-	<ol>
-		<li><a href="#/events/ucsfevents">UCSF Events</a></li>
-		<li><a href="#/events/academicevents">Featured Academic Events</a></li>
-	</ol>
-</div>
-</script>
-
-<script type="text/ng-template" id="events/ucsfEvents.html">
-<section class="menu detailed">
-    <h2>UCSF Events</h2>
-    <progress data-ng-hide="feed"><span class="spinner"></span></progress>
-
-    <ol data-ng-repeat="entry in feed.entries">
-        <li>
-            <a class="no-ext-ind" rel="external" href="{{entry.link}}"><span class="external">{{entry.title}}</span>
-                <div class="smallprint light">{{entry.dateTime.date}}</div>
-                <div class="smallprint light">{{entry.dateTime.time}}</div>
-            </a>
-        </li>
-    </ol>
-</section>
-
-</script>
-
-
-
 <script type="text/ng-template" id="main/mainMenu.html">
 <ol class="front">
     <li>
         <a href="#/news"><img class="dashboard_icon" src="img/homescreen/news-72.png" alt=""><br>News</a>
-    </li><li>
-        <a href="#/events"><img class="dashboard_icon" src="img/homescreen/cal-72.png" alt=""><br>Events</a>
-    </li><li>
-        <a href="#/social"><img class="dashboard_icon" src="img/homescreen/soc-72.png" alt=""><br>Social</a>
-    </li><li>
-        <a href="#/emergency"><img class="dashboard_icon" src="img/homescreen/emerg-72.png" alt=""><br>Emergency</a>
     </li>
 </ol>
 </script>
@@ -165,17 +99,6 @@
   <p class="info">An error occurred. Please <a href="" data-ng-click="load()">try again</a>.</p>
 </div>
 
-</script>
-
-<script type="text/ng-template" id="social/mainMenu.html">
-<div class="menu detailed">
-	<h2>UCSF Social Media</h2>
-    <ol>
-        <li><a rel="external" href="http://www.twitter.com/ucsf">Twitter</a></li>
-        <li><a rel="external" href="http://www.youtube.com/ucsf">YouTube</a></li>
-        <li><a rel="external" href="http://www.facebook.com/ucsf">Facebook</a></li>
-    </ol>
-</div>
 </script>
 <!-- End Templates -->
 
