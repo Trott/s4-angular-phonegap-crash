@@ -8,3 +8,8 @@
 6. Wait a few seconds and the app will exit.
 
 On everything else I've tested, it loads the news headlines, which is the expected behavior.
+
+## Notes
+
+* If I remove `fastclick.js` then the crashing stops, but the app still doesn't work. You touch the text and nothing happens.
+* If I remove any asynchronous code in the Angular controller (in the case of this sample code, the `$timeout` stuff, but in the case of my actual app, XHR calls), then the app works.
