@@ -9,20 +9,21 @@
 <body>
     <div id="ng-app" data-ng-app="main">
 
-<!-- Begin Templates -->
-<script type="text/ng-template" id="main/mainMenu.html">
-    <a href="#/shuttle/list">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
-</script>
+        <!-- Begin Templates -->
+        <script type="text/ng-template" id="main/mainMenu.html">
+            <a href="#/shuttle/list">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
+        </script>
 
-<script type="text/ng-template" id="shuttle/routeList.html">
-<progress data-ng-show="loading"></progress>
-<ol data-ng-hide="loading">
-    <li data-ng-repeat="route in routes">
-        {{route.name}}
-    </li>
-</ol>
-</script>
-<!-- End Templates -->
+        <script type="text/ng-template" id="shuttle/routeList.html">
+        <progress data-ng-show="loading"></progress>
+        <ol data-ng-hide="loading">
+            <li data-ng-repeat="route in routes">
+                {{route.name}}
+            </li>
+        </ol>
+        </script>
+        <!-- End Templates -->
+
         <div data-ng-view=""></div>
     </div>
     <script src="js/campuskit.js"></script>
