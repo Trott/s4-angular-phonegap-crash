@@ -11,7 +11,7 @@
 
         <!-- Begin Templates -->
         <script type="text/ng-template" id="main">
-            <a href="#/list">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
+            <a ng-click="showList()">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
         </script>
 
         <script type="text/ng-template" id="list">
@@ -26,8 +26,8 @@
 
         <div data-ng-view=""></div>
     </div>
-    <script src="js/fastclick.js"></script>
     <script src="js/angular.js"></script>
+    <script src="js/angular-mobile.js"></script>
     <script src="js/modules/main.js"></script>
     <script src="js/modules/list.js"></script>
 </body>
