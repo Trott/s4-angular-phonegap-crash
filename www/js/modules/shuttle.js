@@ -3,7 +3,7 @@
     angular.module('shuttle', [])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-        .when('/shuttle/list', {templateUrl: 'shuttle', controller: 'routeMenuShuttleController'});
+        .when('/list', {templateUrl: 'shuttle', controller: 'routeMenuShuttleController'});
     }])
     .controller(
         'routeMenuShuttleController',
