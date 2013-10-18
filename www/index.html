@@ -15,14 +15,12 @@
 </script>
 
 <script type="text/ng-template" id="shuttle/routeList.html">
-<div data-ng-show="loading"><progress></progress></div>
-<div data-ng-hide="loading">
-    <ol>
-        <li data-ng-repeat="route in routes">
-            {{route.name}}
-        </li>
-    </ol>
-</div>
+<progress data-ng-show="loading"></progress>
+<ol data-ng-hide="loading">
+    <li data-ng-repeat="route in routes">
+        {{route.name}}
+    </li>
+</ol>
 </script>
 <!-- End Templates -->
         <div data-ng-view=""></div>
