@@ -18,7 +18,6 @@
 <section>
 <div data-ng-show="loading"><progress></progress></div>
 <div data-ng-hide="loading">
-    <h2>Shuttles<span data-ng-show="location"> for {{location}}</span></h2>
     <ol>
         <li data-ng-repeat="route in routes">
             {{route.name}}
