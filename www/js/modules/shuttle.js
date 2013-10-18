@@ -9,7 +9,6 @@
         'routeMenuShuttleController',
         ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.loading = true;
-            $scope.loadError = false;
 
             var callback = function () {
                 $scope.loading = false;
