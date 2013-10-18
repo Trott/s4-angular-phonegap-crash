@@ -9,32 +9,26 @@
 <body>
     <div id="ng-app" data-ng-app="main">
 
-<!-- Begin Templates -->
-<script type="text/ng-template" id="main/mainMenu.html">
-    <a href="#/shuttle/list">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
-</script>
+        <!-- Begin Templates -->
+        <script type="text/ng-template" id="main">
+            <a href="#/list">On Galaxy S4, touch here, wait a few seconds, and the app will crash.</a>
+        </script>
 
-<script type="text/ng-template" id="shuttle/routeList.html">
-<section>
-<div data-ng-show="loading"><progress><span class="spinner"></span></progress></div>
-<div data-ng-hide="loading" class="menu detailed">
-    <h2>Shuttles<span data-ng-show="location"> for {{location}}</span></h2>
-    <ol>
-        <li data-ng-repeat="route in routes">
-            {{route.name}}
-        </li>
-    </ol>
-    <p data-ng-show="!routes.length && !loadError">No shuttles found.</p>
-    <p data-ng-show="loadError">Could not load content.</p>
-</div>
-</section>
-</script>
-<!-- End Templates -->
+        <script type="text/ng-template" id="list">
+        <progress data-ng-show="loading"></progress>
+        <ol data-ng-hide="loading">
+            <li data-ng-repeat="color in colors">
+                {{color.name}}
+            </li>
+        </ol>
+        </script>
+        <!-- End Templates -->
+
         <div data-ng-view=""></div>
     </div>
     <script src="js/campuskit.js"></script>
     <script src="js/modules/angular.js"></script>
     <script src="js/modules/main.js"></script>
-    <script src="js/modules/shuttle.js"></script>
+    <script src="js/modules/list.js"></script>
 </body>
 </html>

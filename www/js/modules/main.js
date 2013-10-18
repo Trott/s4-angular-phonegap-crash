@@ -1,9 +1,9 @@
 (function () {
     'use strict';
-    angular.module('main', ['shuttle'])
+    angular.module('main', ['list'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-        .when('/', {templateUrl: 'main/mainMenu.html'})
+        .when('/', {templateUrl: 'main'})
         .otherwise({redirectTo: '/'});
     }]);
 }());

@@ -1,22 +1,21 @@
 (function () {
     'use strict';
-    angular.module('shuttle', [])
+    angular.module('list', [])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-        .when('/shuttle/list', {templateUrl: 'shuttle/routeList.html', controller: 'routeMenuShuttleController'});
+        .when('/list', {templateUrl: 'list', controller: 'listController'});
     }])
     .controller(
-        'routeMenuShuttleController',
+        'listController',
         ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.loading = true;
-            $scope.loadError = false;
 
             var callback = function () {
                 $scope.loading = false;
-                $scope.routes = [
-                    {name: 'Blue'},
-                    {name: 'Yellow'},
-                    {name: 'Not Green'}
+                $scope.colors = [
+                    {name: 'Almost Blue'},
+                    {name: 'Kind Of Blue'},
+                    {name: 'Totally Not Blue'}
                 ];
             };
 
