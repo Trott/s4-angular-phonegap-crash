@@ -8,3 +8,5 @@
 6. Wait a few seconds and the app will exit.
 
 On everything else I've tested, it loads the color list content, which is the expected behavior.
+
+I don't even know where to file the bug report on this one: Android, PhoneGap, Cordova, Samsung, my own app, maybe even Angular? (That last one seems like a stretch as there's nothing Angular should be able to do to cause this behavior. But on the other hand, that may be the most likely community to figure a workaround.)
