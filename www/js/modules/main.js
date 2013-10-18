@@ -3,7 +3,7 @@
     angular.module('main', ['shuttle'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-        .when('/', {templateUrl: 'main/mainMenu.html'})
+        .when('/', {templateUrl: 'main'})
         .otherwise({redirectTo: '/'});
     }]);
 }());
