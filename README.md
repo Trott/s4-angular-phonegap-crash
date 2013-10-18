@@ -1,4 +1,11 @@
-## Steps to duplicate crashing behavior
+This PhoneGap+AngularJS app exits (in a "oh, hey, I crashed, I'm outta here!" kind of way) when run on a Galaxy S4 running Android 4.2.2. It runs fine on every other device I've tested it on. The www directory stuff also works fine in browsers, including browsers on the S4/Android 4.2.2 device.
+
+So the bug only seems to happen when this code is:
+
+* Run as a PhoneGap/Cordova app
+* On a Galaxy S4 running Android 4.2.2
+
+## Steps to duplicate behavior
 
 1. Clone this repo
 2. Create the Android executable using PhoneGap. If you have the PhoneGap command-line tool and a free AdobeId login for PhoneGap Build: `phonegap remote build android`
