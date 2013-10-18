@@ -1,12 +1,12 @@
 (function () {
     'use strict';
-    angular.module('shuttle', [])
+    angular.module('list', [])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-        .when('/list', {templateUrl: 'shuttle', controller: 'routeMenuShuttleController'});
+        .when('/list', {templateUrl: 'list', controller: 'listController'});
     }])
     .controller(
-        'routeMenuShuttleController',
+        'listController',
         ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.loading = true;
 
