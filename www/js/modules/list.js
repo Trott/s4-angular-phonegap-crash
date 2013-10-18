@@ -12,10 +12,10 @@
 
             var callback = function () {
                 $scope.loading = false;
-                $scope.routes = [
-                    {name: 'Blue'},
-                    {name: 'Yellow'},
-                    {name: 'Not Green'}
+                $scope.colors = [
+                    {name: 'Almost Blue'},
+                    {name: 'Kind Of Blue'},
+                    {name: 'Totally Not Blue'}
                 ];
             };
 
