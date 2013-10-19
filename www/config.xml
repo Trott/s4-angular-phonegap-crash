@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="s4-angular-phonegap-bug" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.example.s4-angular-phonegap-bug" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>S4AngularPhoneGapBug</name>
     <description>
         Demonstrates Angular dirty checking crashing PhoneGap app on Galaxy S4 running Android 4.2.2
