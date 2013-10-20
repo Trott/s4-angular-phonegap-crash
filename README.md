@@ -8,7 +8,7 @@ So the bug only seems to happen when this code is:
 ## Steps to duplicate behavior
 
 1. Clone this repo
-2. Create the Android executable using Cordova. With `cordova` command line tool: 
+2. Create the Android executable using Cordova. With `cordova` command line tool and Android SDK installed: 
   - `cordova platform add android`
   - `cordova build`
 3. Take the resulting APK and install it on a Galaxy S4 running Android 4.2.2. If you don't own one, you can test with one for free at http://developer.samsung.com/remotetestlab.
