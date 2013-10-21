@@ -16,6 +16,6 @@ So the bug only seems to happen when this code is:
 5. Touch the text on the app's main screen.
 6. Wait a few seconds and the app will exit.
 
-On everything else I've tested, it loads the color list content, which is the expected behavior.
+I tried it with Cordova 3.1.0. I also tried it with cordova-3.2.0-dev.jar compiled from [the cordova-android repo](https://github.com/apache/cordova-android) at commit 28c41294bba746c75beae0ab26a42c8412cc665a (most recent commit to master as of October 20, 2013, which is today). No change in behavior--the app still exits unexpectedly.
 
 Cordova bug? Samsung bug? Android bug? Something stupid I'm doing?
