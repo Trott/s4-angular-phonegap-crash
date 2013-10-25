@@ -2,7 +2,7 @@ This very small ~~PhoneGap~~Cordova+AngularJS app exits (in a "oh, hey, I crashe
 
 So the bug only seems to happen when this code is:
 
-* Run as a Cordova app
+* Run as a native app (via Cordova) and not in a web browser
 * On a Galaxy S4 running Android 4.2.2
 
 ## Steps to duplicate behavior
@@ -18,4 +18,6 @@ So the bug only seems to happen when this code is:
 
 I tried it with Cordova 3.1.0. I also tried it with cordova-3.2.0-dev.jar compiled from [the cordova-android repo](https://github.com/apache/cordova-android) at commit 28c41294bba746c75beae0ab26a42c8412cc665a (most recent commit to master as of October 20, 2013, which is today). No change in behavior--the app still exits unexpectedly.
 
-Cordova bug? Samsung bug? Android bug? Something stupid I'm doing?
+~~Cordova bug? Samsung bug? Android bug? Something stupid I'm doing?~~ It's a Samsung bug! See https://issues.apache.org/jira/browse/CB-5144?jql=project%20%3D%20CB.
+
+
