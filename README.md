@@ -5,6 +5,8 @@ So the bug only seems to happen when this code is:
 * Run as a native app (via Cordova) and not in a web browser
 * On a Galaxy S4 running Android 4.2.2
 
+*Samsung has released Android 4.3 for Galaxy S4 hardware.* If you have a Galaxy S4 running Android 4.3, you would be doing me a huge favor by testing to see if this bug is fixed or not.
+
 ## Steps to duplicate behavior
 
 1. Clone this repo
